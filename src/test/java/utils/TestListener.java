@@ -20,12 +20,12 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult iTestResult) {
-        log.info(iTestResult.getTestClass().getTestName() + " started");
+        log.info("Test started");
     }
 
     @Override
     public void onTestSuccess(ITestResult iTestResult) {
-        log.info(iTestResult.getTestClass().getTestName() + " finished");
+        log.info("Test finished");
     }
 
     @Override
