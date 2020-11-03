@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="All" verbose="1" >
+    <test name="checkCostFromEmail"   >
+        <classes>
+            <class name="test.TestCalculator" />
+        </classes>
+    </test>
+</suite>

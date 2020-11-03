@@ -1,0 +1,31 @@
+package page;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+
+public class ResultGooglePage extends Page{
+
+    /*@FindBy(xpath = "//a[@class=\"gs-title\"]/b[contains(text(),\"Calculator\")]")
+    private WebElement linkCalculator;*/
+    private WebElement link;
+
+
+    public ResultGooglePage(WebDriver driver) {
+        super(driver);
+        PageFactory.initElements(driver, this);
+    }
+
+    public CalculatorGooglePage chooseLinkContainsSearchingText(String serachText){
+        String xpath = "//a[@class='gs-title']/b[contains(text(),'%s')]";
+        xpath = String.format(xpath, serachText);
+
+        link = driver.findElement(By.xpath(xpath));
+
+        link.click();
+
+        return new CalculatorGooglePage(driver);
+    }
+}
