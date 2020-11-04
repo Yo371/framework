@@ -17,10 +17,10 @@ public class CommonConditionTest {
 
     // mvn -Dbrowser=chrome -DsuiteXmlFile=src\test\resources\testng-smoke.xml clean test
 // mvn -Dbrowser=chrome -Denvironment=calculator -Dsurefire.suiteXmlFiles=src\test\resources\testng-smoke.xml clean test
-    static {
+    /*static {
         System.setProperty("environment", "calculator");
         System.setProperty("browser", "chrome");
-    }
+    }*/
 
     protected WebDriver driver;
     protected CalculatorGooglePage calculatorGooglePage;
