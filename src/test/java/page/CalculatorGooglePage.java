@@ -164,6 +164,11 @@ public class CalculatorGooglePage {
         String xpathCount = "//div[@id='select_container_353']//md-option/div[contains(text(), '%s')]";
         xpathCount = String.format(xpathCount, gpu.getAmount());
         gpuCountOption = driver.findElement(By.xpath(xpathCount));
+
+        new WebDriverWait(driver,4).until(
+                ExpectedConditions.elementToBeClickable(gpuCountOption)
+        );
+
         gpuCountOption.click();
 
         selectGpuType.click();
