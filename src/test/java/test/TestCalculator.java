@@ -13,11 +13,23 @@ import java.util.ArrayList;
 
 public class TestCalculator extends CommonConditionTest {
 
-    @Test
+    /*@Test
     public void test(){
-
+        System.out.println("test1");
         Assert.assertTrue(true);
     }
+
+    @Test
+    public void test2(){
+        System.out.println("test2");
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void test3(){
+        System.out.println("test3");
+        Assert.assertTrue(true);
+    }*/
 
     @Test
     public void checkCostFromEmail() {
@@ -66,7 +78,6 @@ public class TestCalculator extends CommonConditionTest {
                 ParseString.findDoubleInString(calculatorGooglePage.getResultCostMonth()),
                 Double.parseDouble(READY_COST_MONTH));
     }
-
 
 
 

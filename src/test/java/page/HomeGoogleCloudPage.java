@@ -29,7 +29,7 @@ public class HomeGoogleCloudPage extends Page{
         searchArea.sendKeys(text);
         searchArea.sendKeys(Keys.ENTER);
 
-        CustomCondition.waitElementsPresence(driver, By.className("gs-title"), 10);
+        CustomCondition.waitElementsPresence(driver, By.className("gs-title"), 40);
         return new ResultGooglePage(driver);
     }
 
@@ -37,7 +37,7 @@ public class HomeGoogleCloudPage extends Page{
     public HomeGoogleCloudPage open(){
         driver.get(URL_HOME);
 
-        driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
+        //driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
 
         return this;
     }

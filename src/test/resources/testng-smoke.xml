@@ -1,9 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="Smoke" verbose="1" >
-    <test name="checkCostFromEmail"   >
+<suite name="Smoke" verbose="1">
+    <test name="smoke">
         <classes>
-            <class name="test.TestCalculator" />
+            <class name="test.TestCalculator">
+                <methods>
+                    <include name="checkInstanceType"></include>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>
