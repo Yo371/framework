@@ -5,9 +5,8 @@ import service.CustomCondition;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.concurrent.TimeUnit;
 
-public class HomeGoogleCloudPage extends Page{
+public class HomeGoogleCloudPage extends Page {
     private static final String URL_HOME = "https://cloud.google.com/";
 
 
@@ -22,8 +21,9 @@ public class HomeGoogleCloudPage extends Page{
         PageFactory.initElements(driver, this);
     }
 
-    public ResultGooglePage searchByText(String text){
+    public ResultGooglePage searchByText(String text) {
 
+        CustomCondition.waitElementPresence(driver, By.cssSelector("div.devsite-search-container"), 5);
         searchButton.click();
         CustomCondition.waitElementPresence(driver, By.xpath("//input[@name=\"q\"]"), 5);
         searchArea.sendKeys(text);
@@ -34,7 +34,7 @@ public class HomeGoogleCloudPage extends Page{
     }
 
 
-    public HomeGoogleCloudPage open(){
+    public HomeGoogleCloudPage open() {
         driver.get(URL_HOME);
 
         //driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);

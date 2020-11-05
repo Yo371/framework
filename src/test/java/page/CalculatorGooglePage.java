@@ -24,15 +24,12 @@ public class CalculatorGooglePage {
 
     @FindBy(css = "#select_87")
     private WebElement selectMachineType;
-    private WebElement typeOption;
 
     @FindBy(xpath = "//*[@id=\"select_value_label_59\"]")
     private WebElement selectLocation;
-    private WebElement locationOption;
 
     @FindBy(xpath = "//*[@id=\"select_value_label_60\"]")
     private WebElement selectCommittedUsage;
-    private WebElement usageYearOption;
 
 
     @FindBy(xpath = "//md-checkbox[@ng-model='listingCtrl.soleTenant.addGPUs']")
@@ -40,21 +37,13 @@ public class CalculatorGooglePage {
 
     @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.gpuCount']")
     private WebElement selectGpuCount;
-    private WebElement gpuCountOption;
 
 
     @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.gpuType']")
     private WebElement selectGpuType;
-    private WebElement gpuTypeOption;
 
     @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.ssd']")
     private WebElement selectSSD;
-    private WebElement ssdOption;
-
-
-
-
-
 
     @FindBy(xpath = "//input[@ng-model='listingCtrl.soleTenant.nodesCount']")
     private WebElement selectNodesCount;
@@ -95,18 +84,18 @@ public class CalculatorGooglePage {
         switchFrame();
     }
 
-    public CalculatorGooglePage switchFrame(){
+    public CalculatorGooglePage switchFrame() {
         driver.switchTo().frame(iframeCloud).switchTo().frame(iframeInsideCloud);
         return this;
     }
 
-    public CalculatorGooglePage inputInstances(String instances){
+    public CalculatorGooglePage inputInstances(String instances) {
         CustomCondition.waitElementPresence(driver, By.id("input_61"), 5);
         instancesInput.sendKeys(instances);
         return this;
     }
 
-    public CalculatorGooglePage selectMachineType(String type){
+    public CalculatorGooglePage selectMachineType(String type) {
         selectMachineType.click();
 
         CustomCondition.waitElementsVisibility(driver,
@@ -116,12 +105,12 @@ public class CalculatorGooglePage {
                 = "//md-option[@ng-repeat='instance in typeInfo']/div[contains(text(), '%s')]";
         xpath = String.format(xpath, type);
 
-        typeOption = driver.findElement(By.xpath(xpath));
-        this.typeOption.click();
+        WebElement typeOption = driver.findElement(By.xpath(xpath));
+        typeOption.click();
         return this;
     }
 
-    public CalculatorGooglePage selectLocation(String location){
+    public CalculatorGooglePage selectLocation(String location) {
         selectLocation.click();
 
         CustomCondition.waitElementsVisibility(driver, 5,
@@ -130,13 +119,13 @@ public class CalculatorGooglePage {
         String xpath = "//md-select-menu[@class='md-overflow']//md-option[@ng-repeat='item in listingCtrl.fullRegionList']/div[contains(text(), '%s')]";
         xpath = String.format(xpath, location);
 
-        this.locationOption = driver.findElement(By.xpath(xpath));
-        this.locationOption.click();
+        WebElement locationOption = driver.findElement(By.xpath(xpath));
+        locationOption.click();
 
         return this;
     }
 
-    public CalculatorGooglePage selectCommittedUsage(String year){
+    public CalculatorGooglePage selectCommittedUsage(String year) {
         selectCommittedUsage.click();
 
         String xpath = "//div[@id='select_container_97']//md-option[@class='md-ink-ripple']/div[contains(text(), '%s')]";
@@ -145,45 +134,45 @@ public class CalculatorGooglePage {
         CustomCondition.waitElementsVisibility(driver, 5,
                 By.xpath("//div[@id='select_container_97']"));
 
-        usageYearOption = driver.findElement(By.xpath(xpath));
+        WebElement usageYearOption = driver.findElement(By.xpath(xpath));
         usageYearOption.click();
         return this;
     }
 
 
-    public CalculatorGooglePage addGPU(GPU gpu){
+    public CalculatorGooglePage addGPU(GPU gpu) {
         checkboxGPU.click();
 
         new WebDriverWait(driver, 4)
                 .until(ExpectedConditions.visibilityOf(selectGpuCount));
 
         selectGpuCount.click();
-        CustomCondition.waitElementsVisibility(driver,5,
+        CustomCondition.waitElementsVisibility(driver, 5,
                 By.xpath("//div[@id='select_container_353']"));
 
         String xpathCount = "//div[@id='select_container_353']//md-option/div[contains(text(), '%s')]";
         xpathCount = String.format(xpathCount, gpu.getAmount());
-        gpuCountOption = driver.findElement(By.xpath(xpathCount));
+        WebElement gpuCountOption = driver.findElement(By.xpath(xpathCount));
 
-        new WebDriverWait(driver,4).until(
+        new WebDriverWait(driver, 4).until(
                 ExpectedConditions.elementToBeClickable(gpuCountOption)
         );
 
         gpuCountOption.click();
 
         selectGpuType.click();
-        CustomCondition.waitElementsVisibility(driver,5,
+        CustomCondition.waitElementsVisibility(driver, 5,
                 By.xpath("//div[@id='select_container_355']"));
 
         String xpathType = "//div[@id='select_container_355']//md-option/div[contains(text(), '%s')]";
         xpathType = String.format(xpathType, gpu.getGpuType());
-        gpuTypeOption = driver.findElement(By.xpath(xpathType));
+        WebElement gpuTypeOption = driver.findElement(By.xpath(xpathType));
 
         gpuTypeOption.click();
         return this;
     }
 
-    public CalculatorGooglePage addSsd(String ssd){
+    public CalculatorGooglePage addSsd(String ssd) {
         selectSSD.click();
         CustomCondition.waitElementsVisibility(driver, 5,
                 By.xpath("//div[@id='select_container_117']"));
@@ -191,18 +180,18 @@ public class CalculatorGooglePage {
         String xpath = "//div[@id='select_container_117']//md-option/div[contains(text(), '%s')]";
         xpath = String.format(xpath, ssd);
 
-        ssdOption = driver.findElement(By.xpath(xpath));
+        WebElement ssdOption = driver.findElement(By.xpath(xpath));
         ssdOption.click();
         return this;
     }
 
-    public CalculatorGooglePage selectNode(int n){
+    public CalculatorGooglePage selectNode(int n) {
         selectNodesCount.click();
         selectNodesCount.sendKeys(String.valueOf(n));
         return this;
     }
 
-    public CalculatorGooglePage estimateInstancesField(){
+    public CalculatorGooglePage estimateInstancesField() {
 
         /*JavascriptExecutor jse = (JavascriptExecutor)driver;
         jse.executeScript("arguments[0].click()", buttonsEstimateList.get(0));*/
@@ -213,7 +202,7 @@ public class CalculatorGooglePage {
         return this;
     }
 
-    public CalculatorGooglePage estimateNodesField(){
+    public CalculatorGooglePage estimateNodesField() {
         /*new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(buttonsEstimateList.get(1)));
          buttonsEstimateList.get(1).click();
         ElementClickInterceptedException: element click intercepted*/
@@ -227,14 +216,14 @@ public class CalculatorGooglePage {
         return this;
     }
 
-    public CalculatorGooglePage emailEstimate(){
+    public CalculatorGooglePage emailEstimate() {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOf(emailButton));
         emailButton.click();
         return this;
     }
 
-    public CalculatorGooglePage sendToEmail(String email){
+    public CalculatorGooglePage sendToEmail(String email) {
 
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.presenceOfElementLocated(
@@ -248,18 +237,19 @@ public class CalculatorGooglePage {
         return this;
     }
 
-    public String getResultVMclass(){
+    public String getResultVMclass() {
         return resultVM.getText().split(":")[1].trim();
     }
 
-    public String getResultInstanceTypeCompute(){
+    public String getResultInstanceTypeCompute() {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//md-content[@id='compute']//div[contains(text(), 'Instance type')]")
                 ));
         return resultInstanceTypeCompute.getText().split(":")[1].trim();
     }
-    public String getResultComputeRegion(){
+
+    public String getResultComputeRegion() {
 
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.presenceOfElementLocated(
@@ -268,9 +258,7 @@ public class CalculatorGooglePage {
         return resultRegionCompute.getText().split(":")[1].trim();
     }
 
-    public String getResultCostMonth(){
-        /*new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.visibilityOf(resultCostMonth));*/
+    public String getResultCostMonth() {
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.presenceOfElementLocated(
                         By.xpath("//md-content[@id='compute']//b[contains(text(), 'Estimated Component Cost:')]")
@@ -278,10 +266,9 @@ public class CalculatorGooglePage {
         return resultCostMonth.getText();
     }
 
-    public String getTotalCost(){
+    public String getTotalCost() {
         return resultTotalCost.getText();
     }
-
 
 
 }

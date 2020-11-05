@@ -13,7 +13,7 @@ public class EmailPage {
     private final WebDriver driver;
 
     @FindBy(xpath = "//*[@id='mail_address']")
-     WebElement emailAdress;
+    WebElement emailAdress;
 
     @FindBy(xpath = "//*[@id=\"mail_messages_content\"]")
     WebElement message;
@@ -29,19 +29,19 @@ public class EmailPage {
         PageFactory.initElements(driver, this);
     }
 
-    public String getAdress(){
+    public String getAdress() {
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.attributeToBeNotEmpty(emailAdress, "value"));
         return emailAdress.getAttribute("value");
     }
 
-    public String getEstimateFromMessage(){
+    public String getEstimateFromMessage() {
 
 
-        try{
+        try {
             new WebDriverWait(driver, 20)
                     .until(CustomCondition.waitForEmail(inboxCountNumber));
-        }catch (TimeoutException e){
+        } catch (TimeoutException e) {
             driver.navigate().refresh();
             new WebDriverWait(driver, 20)
                     .until(CustomCondition.waitForEmail(inboxCountNumber));

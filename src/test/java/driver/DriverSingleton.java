@@ -8,25 +8,21 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class DriverSingleton {
     private static WebDriver driver;
 
-    public static WebDriver getDriver(){
-        if (null == driver){
-            switch (System.getProperty("browser")){
-                case "firefox": {
-                    WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
-                }
-                break;
-                default: {
-                    WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
-                }
+    public static WebDriver getDriver() {
+        if (null == driver) {
+            if ("firefox".equals(System.getProperty("browser"))) {
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+            } else {
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
             }
             driver.manage().window().maximize();
         }
         return driver;
     }
 
-    public static void closeDriver(){
+    public static void closeDriver() {
         driver.quit();
         driver = null;
     }
