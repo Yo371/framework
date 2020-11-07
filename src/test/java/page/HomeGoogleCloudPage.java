@@ -1,12 +1,15 @@
 package page;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import service.CustomCondition;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.FindBy;
 
 
-public class HomeGoogleCloudPage extends Page {
+public class HomeGoogleCloudPage extends AbstractPage {
     private static final String URL_HOME = "https://cloud.google.com/";
 
 
@@ -36,8 +39,6 @@ public class HomeGoogleCloudPage extends Page {
 
     public HomeGoogleCloudPage open() {
         driver.get(URL_HOME);
-
-        //driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
 
         return this;
     }

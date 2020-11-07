@@ -1,6 +1,6 @@
 package utils;
 
-public class ParseString {
+public class StringParser {
     public static double findDoubleInString(String line) {
         String[] splitted = line.split(" ");
         double cost = 0;

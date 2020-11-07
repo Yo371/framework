@@ -1,15 +1,10 @@
 package test;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import page.EmailPage;
-import utils.ParseString;
+import utils.StringParser;
 
-import java.util.ArrayList;
-
-// mvn -Dbrowser=chrome -DsuiteXmlFile=src\test\resources\testng-smoke.xml clean test
-// mvn -Dbrowser=chrome -Denvironment=calculator -Dsurefire.suiteXmlFiles=src\test\resources\testng-smoke.xml clean test
 
 public class TestCalculator extends CommonConditionTest {
 
@@ -21,27 +16,23 @@ public class TestCalculator extends CommonConditionTest {
 
         calculatorGooglePage.emailEstimate();
 
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript("window.open('https://10minutemail.com/');");
+        EmailPage emailPage = new EmailPage(driver).open();
 
-        ArrayList<String> handles = new ArrayList<>(driver.getWindowHandles());
+        calculatorGooglePage.switchToHandle(1);
 
-        driver.switchTo().window(handles.get(1));
+        String emailAddress = emailPage.getAddress();
 
-        EmailPage emailPage = new EmailPage(driver);
+        emailPage.switchToHandle(0);
 
-        String emailAddress = emailPage.getAdress();
-        driver.switchTo().window(handles.get(0));
+        calculatorGooglePage.switchFrame().getEmailPopUpPage().sendToEmail(emailAddress);
 
-        calculatorGooglePage.switchFrame().sendToEmail(emailAddress);
-
-
-        driver.switchTo().window(handles.get(1));
+        calculatorGooglePage.switchToHandle(1);
 
         String totalEstimateFromEmail = emailPage.getEstimateFromMessage();
 
-        Assert.assertEquals(ParseString.getCostFromStringEstimate(totalEstimate),
-                ParseString.getCostFromStringEstimate(totalEstimateFromEmail));
+        Assert.assertEquals(StringParser.getCostFromStringEstimate(totalEstimate),
+                StringParser.getCostFromStringEstimate(totalEstimateFromEmail));
+
     }
 
     @Test
@@ -58,7 +49,7 @@ public class TestCalculator extends CommonConditionTest {
     public void checkCostPerMonth() {
 
         Assert.assertEquals(
-                ParseString.findDoubleInString(calculatorGooglePage.getResultCostMonth()),
+                StringParser.findDoubleInString(calculatorGooglePage.getResultCostMonth()),
                 Double.parseDouble(READY_COST_MONTH));
     }
 

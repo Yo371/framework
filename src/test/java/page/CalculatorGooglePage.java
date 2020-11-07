@@ -1,17 +1,18 @@
 package page;
 
-import model.GPU;
-import service.CustomCondition;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import service.CustomCondition;
 
 import java.util.List;
 
-public class CalculatorGooglePage {
-    private final WebDriver driver;
+public class CalculatorGooglePage extends AbstractPage {
 
     @FindBy(xpath = "//*[@id='cloud-site']/devsite-iframe/iframe")
     private WebElement iframeCloud;
@@ -19,37 +20,12 @@ public class CalculatorGooglePage {
     @FindBy(xpath = "//*[@id='myFrame']")
     private WebElement iframeInsideCloud;
 
-    @FindBy(xpath = "//*[@id=\"input_61\"]")
-    private WebElement instancesInput;
-
-    @FindBy(css = "#select_87")
-    private WebElement selectMachineType;
-
-    @FindBy(xpath = "//*[@id=\"select_value_label_59\"]")
-    private WebElement selectLocation;
-
-    @FindBy(xpath = "//*[@id=\"select_value_label_60\"]")
-    private WebElement selectCommittedUsage;
-
-
-    @FindBy(xpath = "//md-checkbox[@ng-model='listingCtrl.soleTenant.addGPUs']")
-    private WebElement checkboxGPU;
-
-    @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.gpuCount']")
-    private WebElement selectGpuCount;
-
-
-    @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.gpuType']")
-    private WebElement selectGpuType;
-
-    @FindBy(xpath = "//md-select[@ng-model='listingCtrl.soleTenant.ssd']")
-    private WebElement selectSSD;
-
-    @FindBy(xpath = "//input[@ng-model='listingCtrl.soleTenant.nodesCount']")
-    private WebElement selectNodesCount;
-
     @FindBy(xpath = "//button[@aria-label=\"Add to Estimate\"]")
     private List<WebElement> buttonsEstimateList;
+
+    @FindBy(xpath = "//button[@aria-label=\"Email Estimate\"]")
+    private WebElement emailButton;
+
 
     @FindBy(xpath = "//div[contains(text(), 'VM class')]")
     private WebElement resultVM;
@@ -66,128 +42,15 @@ public class CalculatorGooglePage {
     @FindBy(xpath = "//b[contains(text(), \"Total Estimated Cost\")]")
     private WebElement resultTotalCost;
 
-    @FindBy(xpath = "//button[@aria-label=\"Email Estimate\"]")
-    private WebElement emailButton;
-
-    @FindBy(xpath = "//label[contains(text(), 'Email')]//following-sibling::input")
-    private WebElement inputEmail;
-
-    @FindBy(xpath = "//button[@aria-label=\"Send Email\"]")
-    private WebElement sendEmailButton;
-
 
     public CalculatorGooglePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         PageFactory.initElements(driver, this);
-
-        CustomCondition.waitElementPresence(driver, By.xpath("//*[@id='cloud-site']/devsite-iframe/iframe"), 15);
-        switchFrame();
     }
 
     public CalculatorGooglePage switchFrame() {
+        CustomCondition.waitElementPresence(driver, By.xpath("//*[@id='cloud-site']/devsite-iframe/iframe"), 15);
         driver.switchTo().frame(iframeCloud).switchTo().frame(iframeInsideCloud);
-        return this;
-    }
-
-    public CalculatorGooglePage inputInstances(String instances) {
-        CustomCondition.waitElementPresence(driver, By.id("input_61"), 5);
-        instancesInput.sendKeys(instances);
-        return this;
-    }
-
-    public CalculatorGooglePage selectMachineType(String type) {
-        selectMachineType.click();
-
-        CustomCondition.waitElementsVisibility(driver,
-                5, By.xpath("//md-option[@ng-repeat='instance in typeInfo']"));
-
-        String xpath
-                = "//md-option[@ng-repeat='instance in typeInfo']/div[contains(text(), '%s')]";
-        xpath = String.format(xpath, type);
-
-        WebElement typeOption = driver.findElement(By.xpath(xpath));
-        typeOption.click();
-        return this;
-    }
-
-    public CalculatorGooglePage selectLocation(String location) {
-        selectLocation.click();
-
-        CustomCondition.waitElementsVisibility(driver, 5,
-                By.xpath("//*[@id='select_container_90']"));
-
-        String xpath = "//md-select-menu[@class='md-overflow']//md-option[@ng-repeat='item in listingCtrl.fullRegionList']/div[contains(text(), '%s')]";
-        xpath = String.format(xpath, location);
-
-        WebElement locationOption = driver.findElement(By.xpath(xpath));
-        locationOption.click();
-
-        return this;
-    }
-
-    public CalculatorGooglePage selectCommittedUsage(String year) {
-        selectCommittedUsage.click();
-
-        String xpath = "//div[@id='select_container_97']//md-option[@class='md-ink-ripple']/div[contains(text(), '%s')]";
-        xpath = String.format(xpath, year);
-
-        CustomCondition.waitElementsVisibility(driver, 5,
-                By.xpath("//div[@id='select_container_97']"));
-
-        WebElement usageYearOption = driver.findElement(By.xpath(xpath));
-        usageYearOption.click();
-        return this;
-    }
-
-
-    public CalculatorGooglePage addGPU(GPU gpu) {
-        checkboxGPU.click();
-
-        new WebDriverWait(driver, 4)
-                .until(ExpectedConditions.visibilityOf(selectGpuCount));
-
-        selectGpuCount.click();
-        CustomCondition.waitElementsVisibility(driver, 5,
-                By.xpath("//div[@id='select_container_353']"));
-
-        String xpathCount = "//div[@id='select_container_353']//md-option/div[contains(text(), '%s')]";
-        xpathCount = String.format(xpathCount, gpu.getAmount());
-        WebElement gpuCountOption = driver.findElement(By.xpath(xpathCount));
-
-        new WebDriverWait(driver, 4).until(
-                ExpectedConditions.elementToBeClickable(gpuCountOption)
-        );
-
-        gpuCountOption.click();
-
-        selectGpuType.click();
-        CustomCondition.waitElementsVisibility(driver, 5,
-                By.xpath("//div[@id='select_container_355']"));
-
-        String xpathType = "//div[@id='select_container_355']//md-option/div[contains(text(), '%s')]";
-        xpathType = String.format(xpathType, gpu.getGpuType());
-        WebElement gpuTypeOption = driver.findElement(By.xpath(xpathType));
-
-        gpuTypeOption.click();
-        return this;
-    }
-
-    public CalculatorGooglePage addSsd(String ssd) {
-        selectSSD.click();
-        CustomCondition.waitElementsVisibility(driver, 5,
-                By.xpath("//div[@id='select_container_117']"));
-
-        String xpath = "//div[@id='select_container_117']//md-option/div[contains(text(), '%s')]";
-        xpath = String.format(xpath, ssd);
-
-        WebElement ssdOption = driver.findElement(By.xpath(xpath));
-        ssdOption.click();
-        return this;
-    }
-
-    public CalculatorGooglePage selectNode(int n) {
-        selectNodesCount.click();
-        selectNodesCount.sendKeys(String.valueOf(n));
         return this;
     }
 
@@ -223,19 +86,18 @@ public class CalculatorGooglePage {
         return this;
     }
 
-    public CalculatorGooglePage sendToEmail(String email) {
-
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//label[contains(text(), 'Email')]//following-sibling::input")));
-
-        inputEmail.sendKeys(email);
-
-        sendEmailButton.click();
-
-
-        return this;
+    public InstancesAreaCalculatorPage getInstancesAreaPage() {
+        return new InstancesAreaCalculatorPage(driver);
     }
+
+    public NodesAreaCalculatorPage getNodesAreaPage() {
+        return new NodesAreaCalculatorPage(driver);
+    }
+
+    public EmailPopUpCalculatorPage getEmailPopUpPage() {
+        return new EmailPopUpCalculatorPage(driver);
+    }
+
 
     public String getResultVMclass() {
         return resultVM.getText().split(":")[1].trim();
@@ -270,5 +132,20 @@ public class CalculatorGooglePage {
         return resultTotalCost.getText();
     }
 
+    protected void selectOptionFromDropDownList(WebElement webElement, String option) {
+        new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(webElement));
 
+        webElement.click();
+
+        String id = webElement.getAttribute("aria-owns");
+        String optionXpath = String
+                .format("//*[@id = '%s']//md-select-menu//md-option//div[contains(text(), '%s')]",
+                        id, option);
+
+        WebElement optionElement = driver.findElement(By.xpath(optionXpath));
+
+        new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(optionElement));
+
+        optionElement.click();
+    }
 }

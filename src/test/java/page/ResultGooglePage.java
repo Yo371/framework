@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-public class ResultGooglePage extends Page {
+public class ResultGooglePage extends AbstractPage {
 
 
     public ResultGooglePage(WebDriver driver) {

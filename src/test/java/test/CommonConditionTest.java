@@ -6,9 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
-import page.CalculatorGooglePage;
-import page.HomeGoogleCloudPage;
-import page.ResultGooglePage;
+import page.*;
 import service.TestDataReader;
 import utils.TestListener;
 
@@ -17,10 +15,10 @@ public class CommonConditionTest {
 
     // mvn -Dbrowser=chrome -DsuiteXmlFile=src\test\resources\testng-smoke.xml clean test
 // mvn -Dbrowser=chrome -Denvironment=calculator -Dsurefire.suiteXmlFiles=src\test\resources\testng-smoke.xml clean test
-    /*static {
+    static {
         System.setProperty("environment", "calculator");
         System.setProperty("browser", "chrome");
-    }*/
+    }
 
     protected WebDriver driver;
     protected CalculatorGooglePage calculatorGooglePage;
@@ -38,6 +36,7 @@ public class CommonConditionTest {
     protected static final String READY_COST_MONTH = TestDataReader.getTestData("ready.cost.month");
 
 
+
     @BeforeMethod()
     public void setUp() {
 
@@ -50,22 +49,29 @@ public class CommonConditionTest {
         DriverSingleton.closeDriver();
     }
 
-    protected CalculatorGooglePage addOptionsToCalculatorAndEstimateAll() {
+    protected void addOptionsToCalculatorAndEstimateAll() {
         ResultGooglePage resultGooglePage =
                 new HomeGoogleCloudPage(driver).open().searchByText(SEARCH_TEXT);
 
         calculatorGooglePage =
                 resultGooglePage.chooseLinkContainsSearchingText(SEARCH_TEXT);
 
-        GPU gpu = new GPU(Integer.parseInt(AMOUNT_GPU), TYPE_GPU);
+        calculatorGooglePage.switchFrame();
 
-        return calculatorGooglePage.inputInstances(INPUT_INSTANCES)
+        InstancesAreaCalculatorPage calculatorInstancesAreaPage = calculatorGooglePage.getInstancesAreaPage();
+        calculatorInstancesAreaPage.inputInstances(INPUT_INSTANCES)
                 .selectMachineType(MACHINE_TYPE)
                 .selectLocation(LOCATION)
-                .selectCommittedUsage(COMMITED_USAGE)
-                .addGPU(gpu)
-                .selectNode(Integer.parseInt(NODE_AMOUNT))
-                .addSsd(SSD).estimateInstancesField().estimateNodesField();
+                .selectCommittedUsage(COMMITED_USAGE);
+
+        NodesAreaCalculatorPage calculatorNodesAreaPage = calculatorGooglePage.getNodesAreaPage();
+
+        GPU gpu = new GPU(Integer.parseInt(AMOUNT_GPU), TYPE_GPU);
+
+        calculatorNodesAreaPage.addGPU(gpu).addSsd(SSD).selectNode(Integer.parseInt(NODE_AMOUNT));
+
+        calculatorGooglePage.estimateInstancesField().estimateNodesField();
+
     }
 
 }
